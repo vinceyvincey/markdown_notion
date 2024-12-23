@@ -36,8 +36,8 @@ A powerful Python tool that converts markdown files into beautifully formatted N
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/markdown-notion.git
-   cd markdown-notion
+   git clone https://github.com/yourusername/markdown_notion.git
+   cd markdown_notion
    ```
 
 2. Install the package:
