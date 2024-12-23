@@ -73,40 +73,40 @@ A powerful Python tool that converts markdown files into beautifully formatted N
 
 Convert a markdown file to a Notion page:
 ```bash
-markdown-notion input.md page-id
+markdown_notion input.md page-id
 ```
 
 You can use either the page ID or the full Notion URL:
 ```bash
-markdown-notion input.md https://notion.so/workspace/Page-Name-123456789...
+markdown_notion input.md https://notion.so/workspace/Page-Name-123456789...
 ```
 
 ### Advanced Options
 
 Clear existing page content before conversion:
 ```bash
-markdown-notion input.md page-id --clear
+markdown_notion input.md page-id --clear
 ```
 
 Update page title using markdown filename:
 ```bash
-markdown-notion input.md page-id --update-title
+markdown_notion input.md page-id --update-title
 ```
 
 Enable verbose logging:
 ```bash
-markdown-notion input.md page-id -v
+markdown_notion input.md page-id -v
 ```
 
 Specify log directory:
 ```bash
-markdown-notion input.md page-id --log-dir ./logs
+markdown_notion input.md page-id --log-dir ./logs
 ```
 
 ### Full Command Reference
 
 ```bash
-markdown-notion [-h] [-v] [--clear] [--update-title] [--log-dir LOG_DIR] markdown_file page_id
+markdown_notion [-h] [-v] [--clear] [--update-title] [--log-dir LOG_DIR] markdown_file page_id
 ```
 
 Arguments:
