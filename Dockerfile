@@ -15,10 +15,7 @@ RUN python -m venv /opt/venv
 ENV PATH="/opt/venv/bin:$PATH"
 
 # Install dependencies using uv
-RUN uv pip install -e .
-
-# Make port 80 available to the world outside this container
-EXPOSE 80
+RUN uv sync
 
 # Run the command when the container launches
 ENTRYPOINT ["python", "-m", "markdown_notion"] 
