@@ -9,7 +9,7 @@ from pathlib import Path
 from loguru import logger
 
 from markdown_notion.converter import markdown_to_notion_blocks
-from markdown_notion.logging import setup_logging
+from markdown_notion.log_config import setup_logging
 from markdown_notion.notion import NotionClient
 from markdown_notion.parser import parse_markdown_file
 

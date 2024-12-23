@@ -96,13 +96,24 @@ def _process_element(element: BeautifulSoup) -> Optional[Dict[str, Any]]:
     if element.name is None:
         return None
 
-    logger.trace(f"Processing element of type: {element.name}")
+    logger.debug(f"Processing element of type: {element.name}")
 
     try:
+        # Handle horizontal rules first
+        if element.name == "hr":
+            logger.debug("Processing horizontal rule")
+            return {"type": "divider"}
+
         # Handle headings
         if element.name.startswith("h") and len(element.name) == 2:
-            level = int(element.name[1])
-            return {"type": f"heading_{level}", "content": element.get_text()}
+            level = element.name[1]
+            logger.debug(f"Processing heading with raw level: {level}")
+            try:
+                level = int(level)
+                return {"type": f"heading_{level}", "content": element.get_text()}
+            except ValueError:
+                logger.error(f"Invalid heading level: {level}")
+                raise
 
         # Handle paragraphs
         elif element.name == "p":
@@ -161,15 +172,11 @@ def _process_element(element: BeautifulSoup) -> Optional[Dict[str, Any]]:
             )
             return {"type": "table", "rows": rows, "has_header": has_header}
 
-        # Handle horizontal rules
-        elif element.name == "hr":
-            return {"type": "divider"}
-
         logger.debug(f"Unhandled element type: {element.name}")
         return None
 
     except Exception as e:
-        logger.error(f"Error processing element {element.name}: {e}")
+        logger.error(f"Error processing element {element.name}: {str(e)}")
         raise
 
 
