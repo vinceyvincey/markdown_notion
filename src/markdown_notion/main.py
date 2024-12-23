@@ -9,26 +9,9 @@ from pathlib import Path
 from loguru import logger
 
 from markdown_notion.converter import markdown_to_notion_blocks
+from markdown_notion.logging import setup_logging
 from markdown_notion.notion import NotionClient
 from markdown_notion.parser import parse_markdown_file
-
-
-def setup_logging(verbose: bool = False):
-    """Configure logging settings."""
-    # Remove default logger
-    logger.remove()
-
-    # Add console logger with appropriate level
-    log_level = "DEBUG" if verbose else "INFO"
-    log_format = (
-        "<green>{time:YYYY-MM-DD HH:mm:ss}</green> | "
-        "<level>{level: <8}</level> | "
-        "<cyan>{name}</cyan>:<cyan>{function}</cyan>:<cyan>{line}</cyan> - "
-        "<level>{message}</level>"
-    )
-
-    logger.add(sys.stderr, format=log_format, level=log_level)
-    logger.add("markdown_notion.log", rotation="10 MB", level="DEBUG")
 
 
 def validate_page_id(page_id: str) -> str:
@@ -88,11 +71,16 @@ def main():
         action="store_true",
         help="Enable verbose logging",
     )
+    parser.add_argument(
+        "--log-dir",
+        type=str,
+        help="Directory for log files",
+    )
 
     args = parser.parse_args()
 
     # Setup logging
-    setup_logging(args.verbose)
+    setup_logging(verbose=args.verbose, log_dir=args.log_dir)
     logger.info("Starting markdown to Notion conversion")
 
     try:
