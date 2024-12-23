@@ -1,0 +1,17 @@
+[project]
+name = "markdown-notion"
+version = "0.1.0"
+description = "This package converts a markdown file into Notion blocks"
+readme = "README.md"
+authors = [
+    { name = "vicente", email = "vicente@vectorhomes.co.uk" }
+]
+requires-python = ">=3.13"
+dependencies = []
+
+[project.scripts]
+markdown-notion = "markdown_notion:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
