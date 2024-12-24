@@ -4,14 +4,11 @@
 
 import argparse
 import sys
-from pathlib import Path
 
 from loguru import logger
 
-from markdown_notion.converter import markdown_to_notion_blocks
+from markdown_notion import MarkdownToNotion
 from markdown_notion.log_config import setup_logging
-from markdown_notion.notion import NotionClient
-from markdown_notion.parser import parse_markdown_file
 
 
 def validate_page_id(page_id: str) -> str:
@@ -84,44 +81,22 @@ def main():
     logger.info("Starting markdown to Notion conversion")
 
     try:
-        # Validate and normalize page ID
-        page_id = validate_page_id(args.page_id)
-        logger.debug(f"Normalized page ID: {page_id}")
+        # Initialize converter
+        converter = MarkdownToNotion()
 
-        # Validate markdown file
-        markdown_path = Path(args.markdown_file)
-        if not markdown_path.exists():
-            logger.error(f"Markdown file not found: {args.markdown_file}")
+        # Convert markdown to Notion
+        success = converter.convert_file(
+            args.markdown_file,
+            args.page_id,
+            clear=args.clear,
+            update_title=args.update_title,
+        )
+
+        if success:
+            logger.info("Successfully converted markdown to Notion page")
+        else:
+            logger.error("Failed to convert markdown to Notion page")
             sys.exit(1)
-
-        # Initialize Notion client
-        notion = NotionClient()
-
-        # Clear page content if requested
-        if args.clear:
-            if not notion.clear_page_content(page_id):
-                logger.error("Failed to clear page content")
-                sys.exit(1)
-
-        # Update page title if requested
-        if args.update_title:
-            title = markdown_path.stem.replace("-", " ").replace("_", " ").title()
-            if not notion.update_page_title(page_id, title):
-                logger.error("Failed to update page title")
-                sys.exit(1)
-
-        # Parse markdown file
-        markdown_content = parse_markdown_file(args.markdown_file)
-
-        # Convert to Notion blocks
-        notion_blocks = markdown_to_notion_blocks(markdown_content)
-
-        # Append blocks to page
-        if not notion.append_blocks_to_page(page_id, notion_blocks):
-            logger.error("Failed to append blocks to page")
-            sys.exit(1)
-
-        logger.info("Successfully converted markdown to Notion page")
 
     except Exception as e:
         logger.error(f"Conversion failed: {e}")
