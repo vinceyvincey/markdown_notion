@@ -7,7 +7,7 @@ import sys
 
 from loguru import logger
 
-from markdown_notion import MarkdownToNotion
+from markdown_notion.converter_api import MarkdownToNotion
 from markdown_notion.log_config import setup_logging
 
 
