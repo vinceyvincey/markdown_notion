@@ -3,9 +3,9 @@
 from pathlib import Path
 
 from markdown_notion.converter import markdown_to_notion_blocks
-from markdown_notion.main import validate_page_id
 from markdown_notion.notion import NotionClient
 from markdown_notion.parser import parse_markdown_file
+from markdown_notion.utils import validate_page_id
 
 
 class MarkdownToNotion:
